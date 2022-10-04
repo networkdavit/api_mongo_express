@@ -7,13 +7,15 @@ const mongoose = require("mongoose")
 const port = 6000;
 const uri = process.env.MONGO_URI
 const conn_str = uri
-const post = require('./models/post_schema.js')
 const post_controller = require('./controllers/post_controller.js')
+const user_controller = require('./controllers/user_controller')
 
 app.use(jsonparser)
 
 post_controller.make_post(app)
 post_controller.get_all_posts(app)
+user_controller.register(app)
+
 mongoose.connect(conn_str,{ 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
