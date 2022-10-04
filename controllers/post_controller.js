@@ -24,8 +24,7 @@ function authenticateToken(req, res, next) {
 
 const post_collection = post_model.post
 
-function get_all_posts(app){
-	app.get('/post',authenticateToken, (req, res)=>{
+function get_all_posts(req, res){
 		post_model.post.find({}, function(err, posts) {
 			if(err){
 				res.send(JSON.stringify({response: "Oops, something went wrong"}))
@@ -34,11 +33,9 @@ function get_all_posts(app){
 				res.send({posts: posts});
 			}
 		 });
-	})
 }
 
-function get_one_post(app){
-	app.get('/post/:id',authenticateToken, (req, res)=>{
+function get_one_post(req, res){
 		const id = req.params.id
 		post_model.post.findOne({id}, function(err, post) {
 			if(err){
@@ -48,12 +45,10 @@ function get_one_post(app){
 				res.send({post: post});
 			}
 			});
-	})
 }
 
 
-function make_post(app){
-	app.post('/post', (req,res)=>{
+function make_post(req, res){
 		const content = req.body 
 		const title = content["title"]
 		const body = content["body"]
@@ -67,10 +62,8 @@ function make_post(app){
 			res.send(JSON.stringify({response: "Oops, something went wrong"}))
 		}else{
 			res.send(JSON.stringify({response: "Created"}))
-	}
-})
-	
-    })
+		}
+		})
 }
 
-module.exports = {make_post,get_all_posts,get_one_post}
+module.exports = {make_post,get_all_posts,get_one_post, authenticateToken}

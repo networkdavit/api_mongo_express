@@ -11,8 +11,7 @@ function generateAccessToken(username) {
     return jwt.sign(username, SECRET, { expiresIn: '36000s' });
 }
 
-function register(app){
-	app.post('/auth/register', async (req,res)=>{
+async function register(req, res){
 		const content = req.body 
 		const username = content["username"]
 		const email = content["email"]
@@ -40,11 +39,9 @@ function register(app){
                 res.send(JSON.stringify({status: "already registered"}))
             }
         });
-    })
 }
 
-function login(app){
-	app.post('/auth/login', async (req,res)=>{
+async function login(req, res){
 		const content = req.body 
 		const email = content["email"]
         const password = content["password"]
@@ -56,7 +53,6 @@ function login(app){
                 res.send(JSON.stringify({status: "Wrong credentials"}));
             }         
      });
-    })
 }
 
 module.exports = {register, login}

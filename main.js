@@ -11,12 +11,10 @@ const post_controller = require('./controllers/post_controller.js')
 const user_controller = require('./controllers/user_controller')
 
 app.use(jsonparser)
-
-post_controller.make_post(app)
-post_controller.get_all_posts(app)
-post_controller.get_one_post(app)
-user_controller.register(app)
-user_controller.login(app)
+const post_router = require('./routes/post')
+const user_router = require('./routes/user')
+user_router.user_routes(app)
+post_router.post_routes(app)
 
 mongoose.connect(conn_str,{ 
   useNewUrlParser: true, 
