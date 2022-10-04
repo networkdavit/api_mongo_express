@@ -4,21 +4,16 @@ const app = express();
 const bodyparser = require("body-parser")
 const jsonparser = bodyparser.json()
 const mongoose = require("mongoose")
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 const port = 6000;
 const uri = process.env.MONGO_URI
 const conn_str = uri
 const post = require('./models/post_schema.js')
 const post_controller = require('./controllers/post_controller.js')
 
-console.log(post.post)
 app.use(jsonparser)
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
 post_controller.make_post(app)
+post_controller.get_all_posts(app)
 mongoose.connect(conn_str,{ 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
