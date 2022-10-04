@@ -32,9 +32,25 @@ function register(app){
 		}else{
 			res.send(JSON.stringify({response: "Created", token: token}))
 	}
-})
+    })
 	
     })
 }
 
-module.exports = {register}
+function login(app){
+	app.post('/auth/login', async (req,res)=>{
+		const content = req.body 
+		const email = content["email"]
+        const password = content["password"]
+        const token = generateAccessToken({ username: req.body.username });
+        user_model.user.findOne({ email: req.body["email"]}, async function(err, user) {
+            if (email == user.email && await bcrypt.compare(password, user.password)) {
+                res.send(JSON.stringify({jwt_token: token}));
+            } else {
+                res.send(JSON.stringify({status: "Wrong credentials"}));
+            }         
+     });
+    })
+}
+
+module.exports = {register, login}

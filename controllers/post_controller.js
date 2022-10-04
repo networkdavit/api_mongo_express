@@ -26,16 +26,31 @@ const post_collection = post_model.post
 
 function get_all_posts(app){
 	app.get('/post',authenticateToken, (req, res)=>{
-		post_model.post.find({}, function(err, users) {
+		post_model.post.find({}, function(err, posts) {
 			if(err){
 				res.send(JSON.stringify({response: "Oops, something went wrong"}))
 			}
 			else{
-				res.send({users: users});
+				res.send({posts: posts});
 			}
 		 });
 	})
 }
+
+function get_one_post(app){
+	app.get('/post/:id',authenticateToken, (req, res)=>{
+		const id = req.params.id
+		post_model.post.findOne({id}, function(err, post) {
+			if(err){
+				res.send(JSON.stringify({response: "Oops, something went wrong"}))
+			}
+			else{
+				res.send({post: post});
+			}
+			});
+	})
+}
+
 
 function make_post(app){
 	app.post('/post', (req,res)=>{
@@ -58,4 +73,4 @@ function make_post(app){
     })
 }
 
-module.exports = {make_post,get_all_posts}
+module.exports = {make_post,get_all_posts,get_one_post}

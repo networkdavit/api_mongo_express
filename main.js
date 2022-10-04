@@ -14,7 +14,9 @@ app.use(jsonparser)
 
 post_controller.make_post(app)
 post_controller.get_all_posts(app)
+post_controller.get_one_post(app)
 user_controller.register(app)
+user_controller.login(app)
 
 mongoose.connect(conn_str,{ 
   useNewUrlParser: true, 
