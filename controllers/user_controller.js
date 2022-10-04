@@ -24,16 +24,22 @@ function register(app){
 			email: email,
             password: hashed_password
 		}
-        const token = generateAccessToken({ username: req.body.username });
-		const new_user = new user_connection(added_user)
-		new_user.save((err)=>{
-		if(err){
-			res.send(JSON.stringify({response: "Oops, something went wrong"}))
-		}else{
-			res.send(JSON.stringify({response: "Created", token: token}))
-	}
-    })
-	
+        user_model.user.findOne({ email: req.body["email"]}, async function(err, user) {
+            if(!user) {
+                const token = generateAccessToken({ username: req.body.username });
+                const new_user = new user_connection(added_user)
+                new_user.save((err)=>{
+                if(err){
+                    res.send(JSON.stringify({response: "Oops, something went wrong"}))
+                }else{
+                    res.send(JSON.stringify({response: "Created", token: token}))
+                }
+                }) 
+            }
+            else{
+                res.send(JSON.stringify({status: "already registered"}))
+            }
+        });
     })
 }
 
