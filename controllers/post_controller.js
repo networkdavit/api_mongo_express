@@ -1,4 +1,5 @@
 const post_model = require('../models/post_schema.js')
+const user_model = require('../models/user_schema.js')
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const SECRET = process.env.TOKEN_SECRET
@@ -35,14 +36,26 @@ function get_all_posts(req, res){
 
 function get_one_post(req, res){
 		const id = req.params.id
-		post_model.post.findOne({id}, (err, post)=> {
-			if(err){
+		const identifier = req.body["identifier"]
+		user_model.user.findOne({ identifier: identifier}, async (err, user)=> {
+			if(err || user === null){
 				res.send(JSON.stringify({response: "Oops, something went wrong"}))
 			}
 			else{
-				res.send({post: post});
+				post_model.post.findOne({id}, (err, post)=> {
+					if(err || post === null){
+						res.send(JSON.stringify({response: "Sorry, that post doesn't exist"}))
+					}
+					else if (user.identifier == identifier){
+						res.send({post: post});
+					}
+					else{
+						res.sendStatus(401)
+					}
+				});
 			}
-			});
+		})
+
 }
 
 
