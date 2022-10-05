@@ -23,7 +23,7 @@ async function register(req, res){
 			email: email,
             password: hashed_password
 		}
-        user_model.user.findOne({ email: req.body["email"]}, async function(err, user) {
+        user_model.user.findOne({ email: req.body["email"]}, async (err, user)=> {
             if(!user) {
                 const token = generateAccessToken({ username: req.body.username });
                 const new_user = new user_connection(added_user)
@@ -46,8 +46,11 @@ async function login(req, res){
 		const email = content["email"]
         const password = content["password"]
         const token = generateAccessToken({ username: req.body.username });
-        user_model.user.findOne({ email: req.body["email"]}, async function(err, user) {
-            if (email == user.email && await bcrypt.compare(password, user.password)) {
+        user_model.user.findOne({ email: req.body["email"]}, async (err, user)=> {
+            if(user == undefined){
+                res.send(JSON.stringify({status: "Wrong credentials"}));
+            }
+            else if (email == user.email && await bcrypt.compare(password, user.password)) {
                 res.send(JSON.stringify({jwt_token: token}));
             } else {
                 res.send(JSON.stringify({status: "Wrong credentials"}));
@@ -55,4 +58,8 @@ async function login(req, res){
      });
 }
 
-module.exports = {register, login}
+module.exports = 
+    {
+        register, 
+        login
+    }

@@ -23,7 +23,7 @@ function authenticateToken(req, res, next) {
 const post_collection = post_model.post
 
 function get_all_posts(req, res){
-		post_model.post.find({}, function(err, posts) {
+		post_model.post.find({}, (err, posts)=> {
 			if(err){
 				res.send(JSON.stringify({response: "Oops, something went wrong"}))
 			}
@@ -35,7 +35,7 @@ function get_all_posts(req, res){
 
 function get_one_post(req, res){
 		const id = req.params.id
-		post_model.post.findOne({id}, function(err, post) {
+		post_model.post.findOne({id}, (err, post)=> {
 			if(err){
 				res.send(JSON.stringify({response: "Oops, something went wrong"}))
 			}
@@ -64,4 +64,42 @@ function make_post(req, res){
 		})
 }
 
-module.exports = {make_post,get_all_posts,get_one_post, authenticateToken}
+function update_one_post(req, res){
+	const id = req.params.id
+	const content = req.body 
+	const title = content["title"]
+	const body = content["body"]
+	const modified_post ={
+		title: title,
+		body: body
+	}
+	console.log(modified_post)
+	post_model.post.findOneAndUpdate(id, modified_post,(err, post)=>{
+		if(err){
+			res.send(JSON.stringify({response: "Oops, something went wrong"}))
+		}
+		else{
+			res.send({response: "Successfully updated"});
+		}
+	})
+}
+
+function delete_one_post(req, res){
+	const id = req.params.id
+	post_model.post.findOneAndDelete({id},(err, post) =>{
+		if(err){
+			res.send(JSON.stringify({response: "Oops, something went wrong"}))
+		}
+		else{
+			res.send({response: "Successfully deleted"});
+		}
+		});
+}
+
+module.exports =
+	{
+		make_post,get_all_posts,
+		get_one_post, authenticateToken,
+		delete_one_post, 
+		update_one_post
+	}

@@ -7,8 +7,6 @@ const mongoose = require("mongoose")
 const port = 6000;
 const uri = process.env.MONGO_URI
 const conn_str = uri
-const post_controller = require('./controllers/post_controller.js')
-const user_controller = require('./controllers/user_controller')
 
 app.use(jsonparser)
 const post_router = require('./routes/post')
