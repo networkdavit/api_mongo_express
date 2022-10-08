@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const { post } = require("../models/post_schema")
+const { post, post_schema } = require("../models/post_schema")
 require('dotenv').config({path:__dirname+'/../.env'})
 const prompt = require('prompt-sync')();
 const uri = process.env.MONGO_URI
@@ -16,7 +16,7 @@ mongoose.connect(conn_str, {
     })
     .catch((err) => {
         console.log(err)
-    })
+    })   
 
 const seedPosts = [
     {
@@ -29,7 +29,7 @@ const seedPosts = [
     },
     {
         title: "Wow what a day",
-        body: "This is my third post"
+        body: "This is my third post",
     },
     {
         title: "Fantastic World",
@@ -39,13 +39,13 @@ const seedPosts = [
         title: "Hello again",
         body: "This is my fifth post"
     }
-]
+]    
 
 const seedDB = async () => {
     if(doDletePreviousRecords == "yes" || doDletePreviousRecords == "y"){
         await post.deleteMany({}) 
      }
-    await post.insertMany(seedPosts)
+    await post.create(seedPosts)
 }
 
 seedDB().then(() => {

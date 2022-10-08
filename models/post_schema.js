@@ -12,7 +12,7 @@ const post_schema = new Schema({
   }
 });
 
-post_schema.plugin(AutoIncrement, {id:'order_seq',inc_field: 'id'});
+post_schema.plugin(AutoIncrement, {id:'order_post_id',inc_field: 'id'});
 const post = mongoose.model('posts', post_schema)
 
 module.exports = {

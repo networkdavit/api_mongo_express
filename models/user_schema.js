@@ -5,10 +5,12 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const user_schema = new Schema({
   username: {
-    type: String
+    type: String,
+    index: {unique: true, dropDups: true}
   },
   email: {
-    type: String
+    type: String,
+    index: {unique: true, dropDups: true}
   },
   identifier: {
     type: String

@@ -35,27 +35,12 @@ function get_all_posts(req, res){
 }
 
 function get_one_post(req, res){
-		const id = req.params.id
-		const identifier = req.body["identifier"]
-		user_model.user.findOne({ identifier: identifier}, async (err, user)=> {
-			if(err || user === null){
-				res.send(JSON.stringify({response: "Oops, something went wrong"}))
-			}
-			else{
-				post_model.post.findOne({id}, (err, post)=> {
-					if(err || post === null){
-						res.send(JSON.stringify({response: "Sorry, that post doesn't exist"}))
-					}
-					else if (user.identifier == identifier){
-						res.send({post: post});
-					}
-					else{
-						res.sendStatus(401)
-					}
-				});
-			}
-		})
-
+		const id = req.params.id		
+		post_model.post.findOne({id}, (err, post)=> {
+			console.log(post)
+				res.send({post: post});
+			
+		});
 }
 
 
@@ -86,12 +71,14 @@ function update_one_post(req, res){
 		title: title,
 		body: body
 	}
-	console.log(modified_post)
-	post_model.post.findOneAndUpdate(id, modified_post,(err, post)=>{
+	console.log(id)
+	post_model.post.findOneAndUpdate({id}, modified_post,(err, post)=>{
+		console.log(post)
 		if(err){
 			res.send(JSON.stringify({response: "Oops, something went wrong"}))
 		}
 		else{
+			post.save()
 			res.send({response: "Successfully updated"});
 		}
 	})

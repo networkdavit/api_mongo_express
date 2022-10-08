@@ -29,22 +29,16 @@ async function register(req, res){
             identifier: email_identifier,
             password: hashed_password
 		}
-        user_model.user.find({ email: req.body["email"], username: req.body["username"]}, async (err, user)=> {
-            if(!user) {
-                const token = generateAccessToken({ email: email });
-                const new_user = new user_connection(added_user)
-                new_user.save((err)=>{
-                if(err){
-                    res.send(JSON.stringify({response: "Oops, something went wrong"}))
-                }else{
-                    res.send(JSON.stringify({response: "Created", identifier: email_identifier, token: token}))
-                }
-                }) 
-            }
-            else{
-                res.send(JSON.stringify({status: "User with that username or email already exists"}))
-            }
-        });
+        const token = generateAccessToken({ email: email });
+        const new_user = new user_connection(added_user)
+        new_user.save((err)=>{
+        if(err){
+            res.send(JSON.stringify({response: "Sorry, someone with that username or email already exists"}))
+        }else{
+            res.send(JSON.stringify({response: "Created", token: token}))
+        }
+        }) 
+        
 }
 
 async function login(req, res){
@@ -57,7 +51,7 @@ async function login(req, res){
                 res.send(JSON.stringify({status: "Wrong credentials"}));
             }
             else if (email == user.email && await bcrypt.compare(password, user.password)) {
-                res.send(JSON.stringify({response: "Logged in", identifier: identifier, jwt_token: token}));
+                res.send(JSON.stringify({response: "Logged in", jwt_token: token}));
             } else {
                 res.send(JSON.stringify({status: "Wrong credentials"}));
             }         
