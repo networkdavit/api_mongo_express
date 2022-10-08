@@ -37,7 +37,6 @@ function get_all_posts(req, res){
 function get_one_post(req, res){
 		const id = req.params.id		
 		post_model.post.findOne({id}, (err, post)=> {
-			console.log(post)
 				res.send({post: post});
 			
 		});
@@ -71,9 +70,7 @@ function update_one_post(req, res){
 		title: title,
 		body: body
 	}
-	console.log(id)
 	post_model.post.findOneAndUpdate({id}, modified_post,(err, post)=>{
-		console.log(post)
 		if(err){
 			res.send(JSON.stringify({response: "Oops, something went wrong"}))
 		}
