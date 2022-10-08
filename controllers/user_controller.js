@@ -23,14 +23,13 @@ async function register(req, res){
         const password = content["password"]
         const hashed_password = await bcrypt.hash(password, salt)
         const email_identifier = crypto.createHash('sha256').update(email+EMAIL_SECRET).digest('hex')
-        console.log(email_identifier)
 		const added_user ={
 			username: username,
 			email: email,
             identifier: email_identifier,
             password: hashed_password
 		}
-        user_model.user.findOne({ email: req.body["email"]}, async (err, user)=> {
+        user_model.user.find({ email: req.body["email"], username: req.body["username"]}, async (err, user)=> {
             if(!user) {
                 const token = generateAccessToken({ email: email });
                 const new_user = new user_connection(added_user)
@@ -43,7 +42,7 @@ async function register(req, res){
                 }) 
             }
             else{
-                res.send(JSON.stringify({status: "already registered"}))
+                res.send(JSON.stringify({status: "User with that username or email already exists"}))
             }
         });
 }
