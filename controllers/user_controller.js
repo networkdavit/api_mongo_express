@@ -104,7 +104,7 @@ async function confirm_email(req, res){
                     res.send(JSON.stringify({status: "Possibly expired link"}));
                 }
                 else if (id == id) {
-                    user.confirmed = !user.confirmed
+                    user.confirmed = true
                     user.save()
                     res.send(JSON.stringify({response: "Confirmed"}));   
                 }
