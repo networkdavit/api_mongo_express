@@ -4,6 +4,15 @@
 
 This project was built to help you start express/mongo API with a boilerplate which is fully ready for most of the basic back end tasks such as authorization, authentication, email confirmation and CRUD
 
+## Features
+
+* User registration and login
+* Authentication via JWT
+* Email confirmation
+* CRUD for blog posts
+* MongoDB database
+* Step-by-step bullets
+
 ### Installing
 
 ```
@@ -49,16 +58,6 @@ nodemon server.js
 * Make a request to http://localhost:6000/post
 * If you get 200 OK and {"posts": []} as a result, everything was successul
 * From there you can edit the app based on your needs
-
-
-## Features
-
-* User registration and login
-* Authentication via JWT
-* Email confirmation
-* CRUD for blog posts
-* MongoDB database
-* Step-by-step bullets
 
 ## Authors
 
