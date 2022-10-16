@@ -4,7 +4,7 @@ const user_model = require('../models/user_schema.js')
 const jwt_decode = require('jwt-decode');
 require('dotenv').config()
 const jwt_gen = require('../jwt/jwt_generate')
-const email_confirm = require('../mailer/send_confirmation_email')
+const email_confirm = require('../mailers/send_confirmation_email')
 
 
 const SECRET = process.env.TOKEN_SECRET
