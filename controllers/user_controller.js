@@ -77,7 +77,6 @@ async function login(req, res){
     const content = req.body 
     const email = content["email"]
     const password = content["password"]
-    const token = generateAccessToken({ email: req.body.username });
     user_model.user.findOne({ email: req.body["email"]}, async (err, user)=> {
         if(user == undefined){
             res.send(JSON.stringify({status: "Wrong credentials"}));

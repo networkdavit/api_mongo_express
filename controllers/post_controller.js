@@ -1,6 +1,8 @@
 const post_model = require('../models/post_schema.js')
 const user_model = require('../models/user_schema.js')
 const jwt = require('jsonwebtoken');
+const jwt_decode = require('jwt-decode');
+
 require('dotenv').config()
 const SECRET = process.env.TOKEN_SECRET
 
@@ -20,18 +22,36 @@ function authenticateToken(req, res, next) {
 	})
   }
 
+function isConfirmedEmail(req, res, next){
+	const authHeader = req.headers['authorization']
+	const token = authHeader && authHeader.split(' ')[1]
+	const decoded_token = jwt_decode(token)
+	const id = decoded_token.id
+	const email = decoded_token.email
+	console.log(id, email)
+	user_model.user.findOne({ id: id, email: email}, async (err, user)=> {
+		if(user == undefined || user.confirmed == false){
+			res.statusMessage = "Email isn't confirmed"
+			return res.sendStatus(200).end()
+		}
+		else if(user.confirmed == true){
+			next()
+		}
+	})
+}
+
 
 const post_collection = post_model.post
 
 function get_all_posts(req, res){
-		post_model.post.find({}, (err, posts)=> {
-			if(err){
-				res.send(JSON.stringify({response: "Oops, something went wrong"}))
-			}
-			else{
-				res.send({posts: posts});
-			}
-		 });
+	post_model.post.find({}, (err, posts)=> {
+		if(err){
+			res.send(JSON.stringify({response: "Oops, something went wrong"}))
+		}
+		else{
+			res.send({posts: posts});
+		}
+		});
 }
 
 function get_one_post(req, res){
@@ -96,7 +116,9 @@ function delete_one_post(req, res){
 module.exports =
 	{
 		make_post,get_all_posts,
-		get_one_post, authenticateToken,
+		get_one_post, 
+		isConfirmedEmail,
+		authenticateToken,
 		delete_one_post, 
 		update_one_post
 	}
