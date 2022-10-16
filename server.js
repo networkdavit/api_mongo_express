@@ -5,8 +5,7 @@ const bodyparser = require("body-parser")
 const jsonparser = bodyparser.json()
 const mongoose = require("mongoose")
 const port = 6000;
-const uri = process.env.MONGO_URI
-const conn_str = uri
+const conn_str = process.env.MONGO_URI
 
 app.use(jsonparser)
 const post_router = require('./routes/post')
@@ -19,6 +18,7 @@ mongoose.connect(conn_str,{
   useUnifiedTopology: true 
 },(err) => {
 if (err) {
+  console.log(err)
   console.log("error in connection");
 } else {
   console.log("mongodb is connected");

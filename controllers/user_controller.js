@@ -33,6 +33,7 @@ async function register(req, res){
         const new_user = new user_connection(added_user)
         new_user.save((err)=>{
         if(err){
+            console.log(err)
             res.send(JSON.stringify({response: "Sorry, someone with that username or email already exists"}))
         }else{
             res.send(JSON.stringify({response: "Created", token: token}))

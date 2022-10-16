@@ -15,7 +15,11 @@ const user_schema = new Schema({
   identifier: {
     type: String
   },
-  password: {
+  confirmed: {
+    type: Boolean,
+    default: false
+  },
+  password: { 
     type: String
   }
 });
