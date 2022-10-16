@@ -1,43 +1,16 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const user_model = require('../models/user_schema.js')
-const nodemailer = require('nodemailer');
 const jwt_decode = require('jwt-decode');
 require('dotenv').config()
 const jwt_gen = require('../jwt/jwt_generate')
+const email_confirm = require('../mailer/send_confirmation_email')
 
 
 const SECRET = process.env.TOKEN_SECRET
-const EMAIL_SENDER = process.env.EMAIL_SENDER
-const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
 
 const user_connection = user_model.user
 
-
-function send_email(receiver_email, link){
-    const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: EMAIL_SENDER,
-      pass: EMAIL_PASSWORD
-    }
-    });
-  
-    const mailOptions = {
-    from: EMAIL_SENDER,
-    to: receiver_email,
-    subject: 'Confirmation email',
-    text: `Thank you for registering on our website, please confirm your email via the link ${link} `
-    };
-  
-    transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-    }); 
-  }
 
 async function register(req, res){
     const content = req.body 
@@ -57,7 +30,7 @@ async function register(req, res){
         res.send(JSON.stringify({response: "Sorry, someone with that username or email already exists"}))
     }else{
         const token = jwt_gen.generateAccessToken({ email: email, id: user.id });
-        send_email(email, `http://localhost:6000/auth/user/confirm/${token}`)
+        email_confirm.send_email(email, `http://localhost:6000/auth/user/confirm/${token}`)
         res.send(JSON.stringify({response: "Created"}))
     }
     }) 
