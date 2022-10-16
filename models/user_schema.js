@@ -12,9 +12,6 @@ const user_schema = new Schema({
     type: String,
     index: {unique: true, dropDups: true}
   },
-  identifier: {
-    type: String
-  },
   confirmed: {
     type: Boolean,
     default: false
