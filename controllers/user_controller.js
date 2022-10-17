@@ -5,6 +5,7 @@ const jwt_decode = require('jwt-decode');
 require('dotenv').config()
 const jwt_gen = require('../jwt/jwt_generate')
 const email_confirm = require('../mailers/send_confirmation_email')
+const port = require('../constants').port;
 
 
 const SECRET = process.env.TOKEN_SECRET
@@ -30,7 +31,7 @@ async function register(req, res){
         res.send(JSON.stringify({response: "Sorry, someone with that username or email already exists"}))
     }else{
         const token = jwt_gen.generateAccessToken({ email: email, id: user.id });
-        email_confirm.send_email(email, `http://localhost:6000/auth/user/confirm/${token}`)
+        email_confirm.send_email(email, `http://localhost:${port}/auth/user/confirm/${token}`)
         res.send(JSON.stringify({response: "Created"}))
     }
     }) 
@@ -65,12 +66,12 @@ async function confirm_email(req, res){
             const email = decoded_token.email
             user_model.user.findOne({ id: id, email: email}, async (err, user)=> {
                 if(user == undefined){
-                    res.send(JSON.stringify({status: "Possibly expired link"}));
+                    res.send(JSON.stringify({status: "Something went wrong, possibly the link has been expired"}));
                 }
                 else if (id == id) {
                     user.confirmed = true
                     user.save()
-                    res.send(JSON.stringify({response: "Confirmed"}));   
+                    res.send(JSON.stringify({response: "Email has been confirmed, thank you!"}));   
                 }
             })
         }

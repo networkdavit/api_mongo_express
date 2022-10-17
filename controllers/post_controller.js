@@ -28,7 +28,6 @@ function isConfirmedEmail(req, res, next){
 	const decoded_token = jwt_decode(token)
 	const id = decoded_token.id
 	const email = decoded_token.email
-	console.log(id, email)
 	user_model.user.findOne({ id: id, email: email}, async (err, user)=> {
 		if(user == undefined || user.confirmed == false){
 			res.statusMessage = "Email isn't confirmed"

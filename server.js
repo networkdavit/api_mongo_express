@@ -4,12 +4,13 @@ const app = express();
 const bodyparser = require("body-parser")
 const jsonparser = bodyparser.json()
 const mongoose = require("mongoose")
-const port = 6000;
+const post_router = require('./routes/posts')
+const user_router = require('./routes/user')
+const port = require('./constants').port;
 const conn_str = process.env.MONGO_URI
 
 app.use(jsonparser)
-const post_router = require('./routes/post')
-const user_router = require('./routes/user')
+
 user_router.user_routes(app)
 post_router.post_routes(app)
 
