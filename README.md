@@ -11,7 +11,7 @@ This project was built to help you start express/mongo API with a boilerplate wh
 * Email confirmation
 * CRUD for blog posts
 * MongoDB database
-* Step-by-step bullets
+* Seeding
 
 ### Installing
 
@@ -58,7 +58,7 @@ nodemon server.js
 * Make a request to http://localhost:6000/post
 * If you get 200 OK and {"posts": []} as a result, everything was successul
 * From there you can edit the app based on your needs
-
+* If you want to seed your post database with some random information, run node post_seed.js in the seed folder, click "y" to delete all previous recrods or anything else to just add data without deleting anything
 ## Authors
 
 Contributors names and contact info
